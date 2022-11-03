@@ -21,6 +21,12 @@ namespace API.Controllers
             return _productRepository.GetAllProducts();
         }
 
+        [HttpPost]
+        public Product CreateNewProduct(Product product)
+        {
+            return _productRepository.InsertProduct(product);
+        }
+
         [HttpGet("CreateDB")]
         public string CreateDB()
         {
