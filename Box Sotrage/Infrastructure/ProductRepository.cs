@@ -28,20 +28,6 @@ namespace Infrastructure
             return product;
         }
 
-        public Product DeleteProduct(Product product)
-        {
-            _db.ProductTable.Remove(product);
-            _db.SaveChanges();
-            return product;
-        }
-
-        public Product EditProduct (Product product)
-        {
-            _db.ProductTable.Update(product);
-            _db.SaveChanges();
-            return product;
-        }
-
         public void CreateDB()
         {
             _db.Database.EnsureDeleted();

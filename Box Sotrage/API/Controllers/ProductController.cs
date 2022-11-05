@@ -36,23 +36,6 @@ namespace API.Controllers
             return BadRequest(validation.ToString());
         }
 
-        [HttpPost]
-        public ActionResult DeleteProduct(Product product)
-        {
-            return Ok(_productRepository.DeleteProduct(product));
-        }
-
-        [HttpPost]
-        public ActionResult UpdateProduct(Product product)
-        {
-            var validation = _productValidator.Validate(product);
-            if (validation.IsValid)
-            {
-                return Ok(_productRepository.EditProduct(product));
-            }
-            return BadRequest(validation.ToString());
-        }
-
         [HttpGet("CreateDB")]
         public string CreateDB()
         {

@@ -10,6 +10,5 @@
 
         public int width { get; set; }
 
-        public string colour { get; set; }
     }
 }
