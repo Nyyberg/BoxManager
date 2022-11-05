@@ -2,6 +2,8 @@
 using Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Policy;
 
 namespace API.Controllers
 {
@@ -10,9 +12,11 @@ namespace API.Controllers
     public class ProductController : ControllerBase
     {
         private ProductRepository _productRepository;
+        private ProductValidator _productValidator;
         public ProductController(ProductRepository repository)
         {
             _productRepository = repository;
+            _productValidator = new ProductValidator();
         }
 
         [HttpGet]
@@ -22,9 +26,31 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public Product CreateNewProduct(Product product)
+        public ActionResult CreateNewProduct(Product product)
         {
-            return _productRepository.InsertProduct(product);
+           var validation = _productValidator.Validate(product);
+            if (validation.IsValid)
+            {
+                return Ok(_productRepository.InsertProduct(product));
+            }
+            return BadRequest(validation.ToString());
+        }
+
+        [HttpPost]
+        public ActionResult DeleteProduct(Product product)
+        {
+            return Ok(_productRepository.DeleteProduct(product));
+        }
+
+        [HttpPost]
+        public ActionResult UpdateProduct(Product product)
+        {
+            var validation = _productValidator.Validate(product);
+            if (validation.IsValid)
+            {
+                return Ok(_productRepository.EditProduct(product));
+            }
+            return BadRequest(validation.ToString());
         }
 
         [HttpGet("CreateDB")]
@@ -33,5 +59,7 @@ namespace API.Controllers
             _productRepository.CreateDB();
             return "DataBase has been created";
         }
+
+
     }
 }
